@@ -1,0 +1,10 @@
+{
+  "name": "study-solar-systems",
+  "private": true,
+  "workspaces": [
+    "api",
+    "client"
+  ],
+  "repository": "git@github.com:angerbaer/study-solar-systems",
+  "author": "Jan Schmidt <me@jnschmdt.de>"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@solar-systems/api",
+  "version": "0.1.0",
+  "description": "Api for the study project in solar-systems",
+  "main": "dist/main.js",
+  "author": "Jan Schmidt <me@jnschmdt.de>",
+  "license": "MIT"
+}

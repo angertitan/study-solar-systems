@@ -5,6 +5,9 @@
     "api",
     "client"
   ],
+  "scripts": {
+    "watch:api": "cd api && yarn watch"
+  },
   "repository": "git@github.com:angerbaer/study-solar-systems",
   "author": "Jan Schmidt <me@jnschmdt.de>"
 }

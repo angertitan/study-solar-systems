@@ -7,6 +7,8 @@ import * as bodyParser from 'body-parser';
 import * as boom from '@hapi/boom';
 import * as expressWinston from 'express-winston';
 
+import getShadowCast from './shadowcast';
+
 // create server
 const server = express();
 
@@ -22,23 +24,27 @@ server.use(cors());
 // create logger
 server.use(
   expressWinston.logger({
-    transports: [new winston.transports.Console(), new winston.transports.File({ filename: 'server.log' })],
+    transports: [new winston.transports.File({ filename: `${__dirname}/server.log` })],
     format: winston.format.combine(winston.format.colorize(), winston.format.json())
   })
 );
 
 server.get(
   '/',
-  (req, res): void => {
-    res.send(req.url);
+  (_req, res): void => {
+    res.send('use /calculate/:method or /shadowcast');
   }
 );
 
-server.get('/errortest', (_req, _res, next): void => next(new Error('this is an errortest')));
+server.get('/calculate/');
+
+server.get('/calculate/:method');
+
+server.get('/shadowcast', getShadowCast);
 
 server.use(
   expressWinston.errorLogger({
-    transports: [new winston.transports.Console(), new winston.transports.File({ filename: 'error.log' })],
+    transports: [new winston.transports.Console(), new winston.transports.File({ filename: `${__dirname}/error.log` })],
     format: winston.format.combine(winston.format.colorize(), winston.format.json())
   })
 );
@@ -57,4 +63,6 @@ server.use(
 );
 // SERVER START
 
-server.listen(3000);
+server.listen(3000, () => {
+  console.log('Server listen, go to http://localhost:3000');
+});

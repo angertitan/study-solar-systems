@@ -21,5 +21,7 @@
     "moduleResolution": "node",
     "declaration": true,
     "lib": ["dom", "esnext"]
-  }
+  },
+  "include": ["*/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

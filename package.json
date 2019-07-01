@@ -6,6 +6,7 @@
     "client"
   ],
   "scripts": {
+    "build:api": "cd api && yarn build",
     "watch:api": "cd api && yarn watch"
   },
   "repository": "git@github.com:angerbaer/study-solar-systems",

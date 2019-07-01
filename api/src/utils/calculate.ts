@@ -1,4 +1,27 @@
-export function getJulianDate(day: number, month: number, year: number): number {
+const taiOffset = 37 * 1000;
+
+function getTaiTime(): number {
+  const utcTime = new Date().getTime();
+  const taiTime = utcTime + taiOffset;
+  return taiTime;
+}
+
+function getTTTime(taiTime: number): number {
+  return taiTime + 32184;
+}
+
+function getDeltaT(): number {
+  const utcTime = new Date().getTime();
+  console.log(utcTime);
+  const taiTime = utcTime + taiOffset;
+  const ttTime = taiTime + 32184;
+
+  const deltaT = ttTime - utcTime;
+
+  return deltaT;
+}
+
+function calcJulianDate(day: number, month: number, year: number): number {
   const y = month > 2 ? year : year - 1;
   const m = month > 2 ? month : month + 12;
   const d = day;
@@ -10,7 +33,7 @@ export function getJulianDate(day: number, month: number, year: number): number 
   return jd;
 }
 
-export function jdToDate(jd: number): number[] {
+function julianToUTC(jd: number): number[] {
   const z = Math.floor(jd + 0.5);
   const f = jd + 0.5 - z;
   const alpha = Math.floor((z - 1867216.25) / 36524.25);
@@ -28,3 +51,5 @@ export function jdToDate(jd: number): number[] {
 
   return [day, month, year];
 }
+
+console.log(getDeltaT());

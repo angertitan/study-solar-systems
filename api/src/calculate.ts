@@ -1,4 +1,4 @@
-function getJulianDate(day: number, month: number, year: number): number {
+export function getJulianDate(day: number, month: number, year: number): number {
   const y = month > 2 ? year : year - 1;
   const m = month > 2 ? month : month + 12;
   const d = day;
@@ -10,7 +10,7 @@ function getJulianDate(day: number, month: number, year: number): number {
   return jd;
 }
 
-function jdToDate(jd: number): number[] {
+export function jdToDate(jd: number): number[] {
   const z = Math.floor(jd + 0.5);
   const f = jd + 0.5 - z;
   const alpha = Math.floor((z - 1867216.25) / 36524.25);

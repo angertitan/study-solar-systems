@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser';
 import * as boom from '@hapi/boom';
 import * as expressWinston from 'express-winston';
 
-import getShadowCast from './shadowcast';
+import getShadowCast from './utils/shadowcast';
 
 // create server
 const server = express();

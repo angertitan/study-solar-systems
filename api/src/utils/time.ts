@@ -22,8 +22,8 @@ export function getUTTime(date: Date, dut: number): number {
 
 export async function getDUT(): Promise<number> {
   const dataObject = await getUsnoDataFromDate(new Date());
-  const deltaT = Number(dataObject['A UT1-UTC']);
-  return deltaT;
+  const deltaUT = Number(dataObject['A UT1-UTC']);
+  return deltaUT;
 }
 
 export function getDeltaT(utTime: number, ttTime: number): number {
@@ -31,14 +31,20 @@ export function getDeltaT(utTime: number, ttTime: number): number {
   return deltaT;
 }
 
-export function getJulianDate(day: number, month: number, year: number): number {
+export async function getJulianDate(day: number, month: number, year: number, hour: number, minute: number, seconds: number, timezone: number): Promise<number> {
+  const dut = await getDUT();
+
   const y = month > 2 ? year : year - 1;
   const m = month > 2 ? month : month + 12;
-  const d = day;
+  const d = day + (hour - timezone + (minute + (seconds + dut) / 60) / 60) / 24;
 
-  const b = 2 - Math.floor(y / 100) + Math.floor(y / 400);
+  const jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d - 1524.5;
 
-  const jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + b - 1524.5;
+  if (jd > 2299160) {
+    const a = Math.floor(y / 100);
+    const correctedJd = jd + (2 - a + Math.floor(a / 4));
+    return correctedJd;
+  }
 
   return jd;
 }
@@ -68,16 +74,16 @@ export function getJulianEphemerisDay(jd: number, deltaT: number): number {
 }
 
 export function getJulianCentury(jd: number): number {
-  const jc = (jd - 351545) / 36525;
+  const jc = (jd - 2451545) / 36525;
   return jc;
 }
 
 export function getJulianEphemerisCentury(jde: number): number {
-  const jce = (jde - 351545) / 36525;
+  const jce = (jde - 2451545) / 36525;
   return jce;
 }
 
 export function getJulianEphemerisMillennium(jce: number): number {
-  const jme = jce / 36525;
+  const jme = jce / 10;
   return jme;
 }

@@ -1,18 +1,18 @@
-import {
-  getDUT, getUTTime, getTTTime, getTaiTime, getDeltaT
-} from './utils/time';
+import * as time from './utils/time';
+import { getL0, getL1 } from './utils/calculate';
 
-async function test(): Promise<void> {
-  const now = new Date();
-  const dut = await getDUT();
-  const utTime = getUTTime(now, dut);
-  const taiTime = getTaiTime(now);
-  const ttTime = getTTTime(taiTime);
-  const deltaT = getDeltaT(utTime, ttTime);
+const start = new Date().getTime();
+console.log(start);
 
-  console.log(deltaT);
-}
+const jd = 2452930.312847;
 
-test().catch((err) => {
-  console.error(err);
-});
+const jde = time.getJulianEphemerisDay(jd, 67);
+const jce = time.getJulianEphemerisCentury(jde);
+const jme = time.getJulianEphemerisMillennium(jce);
+
+console.log('L0', getL0(jme));
+console.log('L1', getL1(jme));
+
+const stop = new Date().getTime() - start;
+
+console.log(stop / 1000);

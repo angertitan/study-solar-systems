@@ -1,1 +1,1 @@
-{}
+{ "python.jediEnabled": false, "python.autoComplete.extraPaths": ["./core"], "python.analysis.downloadChannel": "daily", "python.analysis.logLevel": "Trace" }

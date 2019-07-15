@@ -91,17 +91,17 @@ interface LTermObject {
   C: number;
 }
 
-export function getL0(jme: number): number {
-  const l0Terms = constants.L_TERMS.L0;
+export function getL0(jme: number): Decimal {
+  const l1Terms = constants.L_TERMS.L0;
 
-  const l0 = l0Terms.reduce((accumulator: number, curr: LTermObject): number => {
+  const l0 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
     const { A, B, C } = curr;
+    const cos = new Decimal(B + C * jme).cos();
+    const l0i = cos.times(A);
 
-    const l0i = A * Math.cos(B + C * jme);
-    console.log('l0i', l0i);
-    const result = accumulator + l0i;
+    const result = accumulator.add(l0i);
     return result;
-  }, 0);
+  }, new Decimal(0));
 
   return l0;
 }
@@ -113,7 +113,6 @@ export function getL1(jme: number): Decimal {
     const { A, B, C } = curr;
     const cos = new Decimal(B + C * jme).cos();
     const l1i = cos.times(A);
-    console.log('l1i', l1i);
 
     const result = accumulator.add(l1i);
     return result;
@@ -122,55 +121,80 @@ export function getL1(jme: number): Decimal {
   return l1;
 }
 
-// function getL0(jme: number): number {
-//   const l0Terms = constants.L_TERMS.L0;
+export function getL2(jme: number): Decimal {
+  const l1Terms = constants.L_TERMS.L2;
 
-//   const l0 = l0Terms.reduce((accumulator: number, curr: LTermObject): number => {
-//     const { A, B, C } = curr;
+  const l2 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
+    const { A, B, C } = curr;
+    const cos = new Decimal(B + C * jme).cos();
+    const l2i = cos.times(A);
 
-//     const l0i = A * Math.cos(B + C * jme);
-//     const result = accumulator + l0i;
-//     return result;
-//   }, 0);
+    const result = accumulator.add(l2i);
+    return result;
+  }, new Decimal(0));
 
-//   return l0;
-// }
-// function getL0(jme: number): number {
-//   const l0Terms = constants.L_TERMS.L0;
+  return l2;
+}
 
-//   const l0 = l0Terms.reduce((accumulator: number, curr: LTermObject): number => {
-//     const { A, B, C } = curr;
+export function getL3(jme: number): Decimal {
+  const l1Terms = constants.L_TERMS.L3;
 
-//     const l0i = A * Math.cos(B + C * jme);
-//     const result = accumulator + l0i;
-//     return result;
-//   }, 0);
+  const l3 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
+    const { A, B, C } = curr;
+    const cos = new Decimal(B + C * jme).cos();
+    const l3i = cos.times(A);
 
-//   return l0;
-// }
-// function getL0(jme: number): number {
-//   const l0Terms = constants.L_TERMS.L0;
+    const result = accumulator.add(l3i);
+    return result;
+  }, new Decimal(0));
 
-//   const l0 = l0Terms.reduce((accumulator: number, curr: LTermObject): number => {
-//     const { A, B, C } = curr;
+  return l3;
+}
 
-//     const l0i = A * Math.cos(B + C * jme);
-//     const result = accumulator + l0i;
-//     return result;
-//   }, 0);
+export function getL4(jme: number): Decimal {
+  const l1Terms = constants.L_TERMS.L4;
 
-//   return l0;
-// }
-// function getL0(jme: number): number {
-//   const l0Terms = constants.L_TERMS.L0;
+  const l4 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
+    const { A, B, C } = curr;
+    const cos = new Decimal(B + C * jme).cos();
+    const l4i = cos.times(A);
 
-//   const l0 = l0Terms.reduce((accumulator: number, curr: LTermObject): number => {
-//     const { A, B, C } = curr;
+    const result = accumulator.add(l4i);
+    return result;
+  }, new Decimal(0));
 
-//     const l0i = A * Math.cos(B + C * jme);
-//     const result = accumulator + l0i;
-//     return result;
-//   }, 0);
+  return l4;
+}
 
-//   return l0;
-// }
+export function getL5(jme: number): Decimal {
+  const l1Terms = constants.L_TERMS.L5;
+
+  const l5 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
+    const { A, B, C } = curr;
+    const cos = new Decimal(B + C * jme).cos();
+    const l5i = cos.times(A);
+
+    const result = accumulator.add(l5i);
+    return result;
+  }, new Decimal(0));
+
+  return l5;
+}
+
+export function earthHeliocentricLongitude(jme: number): number {
+  const L0 = getL0(jme);
+  const L1 = getL1(jme).times(jme);
+  const L2 = getL2(jme).times(jme ** 2);
+  const L3 = getL3(jme).times(jme ** 3);
+  const L4 = getL4(jme).times(jme ** 4);
+  const L5 = getL5(jme).times(jme ** 5);
+
+  const L = L0.add(L1)
+    .add(L2)
+    .add(L3)
+    .add(L4)
+    .add(L5);
+
+  const result = limitDegrees360(rad2deg(L.div(10 ** 8).toNumber()));
+  return result;
+}

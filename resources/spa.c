@@ -120,6 +120,7 @@
 
 #include <math.h>
 #include "spa.h"
+#include <stdlib.h>     /* atof */
 #include <stdio.h>
 
 #define PI         3.1415926535897932384626433832795028841971
@@ -680,7 +681,6 @@ double earth_periodic_term_summation(const double terms[][TERM_COUNT], int count
     for (i = 0; i < count; i++)
         sum += terms[i][TERM_A]*cos(terms[i][TERM_B]+terms[i][TERM_C]*jme);
 
-    printf("L: %f\n",sum);
     return sum;
 }
 
@@ -1180,7 +1180,7 @@ int spa_calculate(spa_data *spa)
 int main (int argc, char *argv[])
 {
     spa_data spa;  //declare the SPA structure
-    int result;
+    int result, i;
     float min, sec;
 
     //enter required input values into SPA structure
@@ -1207,30 +1207,34 @@ int main (int argc, char *argv[])
     //call the SPA calculate function and pass the SPA structure
 
     result = spa_calculate(&spa);
-
+    for(i=1;i<argc;i++){
+      printf("Args%d: %f\n",i, atof(argv[i]));
+    }
     if (result == 0)  //check for SPA errors
     {
         //display the results inside the SPA structure
 
-        printf("Julian Day:    %.6f\n",spa.jd);
-        printf("L:             %.6e degrees\n",spa.l);
-        printf("B:             %.6e degrees\n",spa.b);
-        printf("R:             %.6f AU\n",spa.r);
-        printf("H:             %.6f degrees\n",spa.h);
-        printf("Delta Psi:     %.6e degrees\n",spa.del_psi);
-        printf("Delta Epsilon: %.6e degrees\n",spa.del_epsilon);
-        printf("Epsilon:       %.6f degrees\n",spa.epsilon);
-        printf("Zenith:        %.6f degrees\n",spa.zenith);
-        printf("Azimuth:       %.6f degrees\n",spa.azimuth);
-        printf("Incidence:     %.6f degrees\n",spa.incidence);
+        printf("Julian Day:              %.6f\n",spa.jd);
+        printf("Julian ECentery:         %12f\n", spa.jce);
+        printf("Julian ECentery^2:       %12f\n", pow(spa.jce, 2));
+        printf("L:                       %.6e degrees\n",spa.l);
+        printf("B:                       %.6e degrees\n",spa.b);
+        printf("R:                       %.6f AU\n",spa.r);
+        printf("H:                       %.6f degrees\n",spa.h);
+        printf("Delta Psi:               %.6e degrees\n",spa.del_psi);
+        printf("Delta Epsilon:           %.6e degrees\n",spa.del_epsilon);
+        printf("Epsilon:                 %.6f degrees\n",spa.epsilon);
+        printf("Zenith:                  %.6f degrees\n",spa.zenith);
+        printf("Azimuth:                 %.6f degrees\n",spa.azimuth);
+        printf("Incidence:               %.6f degrees\n",spa.incidence);
 
         min = 60.0*(spa.sunrise - (int)(spa.sunrise));
         sec = 60.0*(min - (int)min);
-        printf("Sunrise:       %02d:%02d:%02d Local Time\n", (int)(spa.sunrise), (int)min, (int)sec);
+        printf("Sunrise:                 %02d:%02d:%02d Local Time\n", (int)(spa.sunrise), (int)min, (int)sec);
 
         min = 60.0*(spa.sunset - (int)(spa.sunset));
         sec = 60.0*(min - (int)min);
-        printf("Sunset:        %02d:%02d:%02d Local Time\n", (int)(spa.sunset), (int)min, (int)sec);
+        printf("Sunset:                  %02d:%02d:%02d Local Time\n", (int)(spa.sunset), (int)min, (int)sec);
 
     } else printf("SPA Error Code: %d\n", result);
 

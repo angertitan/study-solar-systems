@@ -2,7 +2,8 @@ import Decimal from 'decimal.js';
 import constants from './constants';
 
 export function rad2deg(radians: number): number {
-  return (180 / constants.PI) * radians;
+  const valueInDef = radians * 180;
+  return valueInDef / constants.PI;
 }
 
 export function def2rad(degrees: number): number {
@@ -85,116 +86,86 @@ export function thirdOrderPolynomial(a: number, b: number, c: number, d: number,
   return ((a * x + b) * x + c) * x + d;
 }
 
-interface LTermObject {
-  A: number;
-  B: number;
-  C: number;
+interface TermObject {
+  [key: string]: number;
 }
 
-export function getL0(jme: number): Decimal {
-  const l1Terms = constants.L_TERMS.L0;
+export function termCalc(jme: number, termKey: string, index: number): Decimal {
+  const rTerms = constants.TERMS[`${termKey}_TERMS`][`${termKey}${index}`];
 
-  const l0 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
+  const r = rTerms.reduce((accumulator: Decimal, curr: TermObject): Decimal => {
     const { A, B, C } = curr;
     const cos = new Decimal(B + C * jme).cos();
-    const l0i = cos.times(A);
+    const ri = cos.times(A);
 
-    const result = accumulator.add(l0i);
+    const result = accumulator.add(ri);
     return result;
   }, new Decimal(0));
 
-  return l0;
-}
-
-export function getL1(jme: number): Decimal {
-  const l1Terms = constants.L_TERMS.L1;
-
-  const l1 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
-    const { A, B, C } = curr;
-    const cos = new Decimal(B + C * jme).cos();
-    const l1i = cos.times(A);
-
-    const result = accumulator.add(l1i);
-    return result;
-  }, new Decimal(0));
-
-  return l1;
-}
-
-export function getL2(jme: number): Decimal {
-  const l1Terms = constants.L_TERMS.L2;
-
-  const l2 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
-    const { A, B, C } = curr;
-    const cos = new Decimal(B + C * jme).cos();
-    const l2i = cos.times(A);
-
-    const result = accumulator.add(l2i);
-    return result;
-  }, new Decimal(0));
-
-  return l2;
-}
-
-export function getL3(jme: number): Decimal {
-  const l1Terms = constants.L_TERMS.L3;
-
-  const l3 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
-    const { A, B, C } = curr;
-    const cos = new Decimal(B + C * jme).cos();
-    const l3i = cos.times(A);
-
-    const result = accumulator.add(l3i);
-    return result;
-  }, new Decimal(0));
-
-  return l3;
-}
-
-export function getL4(jme: number): Decimal {
-  const l1Terms = constants.L_TERMS.L4;
-
-  const l4 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
-    const { A, B, C } = curr;
-    const cos = new Decimal(B + C * jme).cos();
-    const l4i = cos.times(A);
-
-    const result = accumulator.add(l4i);
-    return result;
-  }, new Decimal(0));
-
-  return l4;
-}
-
-export function getL5(jme: number): Decimal {
-  const l1Terms = constants.L_TERMS.L5;
-
-  const l5 = l1Terms.reduce((accumulator: Decimal, curr: LTermObject): Decimal => {
-    const { A, B, C } = curr;
-    const cos = new Decimal(B + C * jme).cos();
-    const l5i = cos.times(A);
-
-    const result = accumulator.add(l5i);
-    return result;
-  }, new Decimal(0));
-
-  return l5;
+  return r;
 }
 
 export function earthHeliocentricLongitude(jme: number): number {
-  const L0 = getL0(jme);
-  const L1 = getL1(jme).times(jme);
-  const L2 = getL2(jme).times(jme ** 2);
-  const L3 = getL3(jme).times(jme ** 3);
-  const L4 = getL4(jme).times(jme ** 4);
-  const L5 = getL5(jme).times(jme ** 5);
+  const L0 = termCalc(jme, 'L', 0).div(10.0 ** 8);
+  const L1 = termCalc(jme, 'L', 1)
+    .times(jme)
+    .div(10.0 ** 8);
+  const L2 = termCalc(jme, 'L', 2)
+    .times(jme ** 2)
+    .div(10.0 ** 8);
+  const L3 = termCalc(jme, 'L', 3)
+    .times(jme ** 3)
+    .div(10.0 ** 8);
+  const L4 = termCalc(jme, 'L', 4)
+    .times(jme ** 4)
+    .div(10.0 ** 8);
+  const L5 = termCalc(jme, 'L', 5)
+    .times(jme ** 5)
+    .div(10.0 ** 8);
 
-  const L = L0.add(L1)
+  const l = L0.add(L1)
     .add(L2)
     .add(L3)
     .add(L4)
     .add(L5);
 
-  const result = limitDegrees360(rad2deg(L.div(10 ** 8).toNumber()));
+  const result = limitDegrees360(rad2deg(l.toNumber()));
+  return result;
+}
+
+export function earthHeliocentricLatitude(jme: number): number {
+  const b0 = termCalc(jme, 'B', 0).div(10.0 ** 8);
+  const b1 = termCalc(jme, 'B', 1)
+    .times(jme)
+    .div(10.0 ** 8);
+
+  const b = b0.add(b1);
+
+  const result = rad2deg(b.toNumber());
+  return result;
+}
+
+export function earthRadiusVector(jme: number): number {
+  const r0 = termCalc(jme, 'R', 0).div(10.0 ** 8);
+  const r1 = termCalc(jme, 'R', 1)
+    .times(jme)
+    .div(10.0 ** 8);
+  const r2 = termCalc(jme, 'R', 2)
+    .times(jme ** 2)
+    .div(10.0 ** 8);
+  const r3 = termCalc(jme, 'R', 3)
+    .times(jme ** 3)
+    .div(10.0 ** 8);
+  const r4 = termCalc(jme, 'R', 4)
+    .times(jme ** 4)
+    .div(10.0 ** 8);
+
+  const r = r0
+    .add(r1)
+    .add(r2)
+    .add(r3)
+    .add(r4);
+
+  const result = r.toNumber();
   return result;
 }

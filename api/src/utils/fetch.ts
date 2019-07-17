@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import * as config from './config';
 
 const headers: { [key: number]: string } = {
   2: 'year',
@@ -36,7 +37,7 @@ const headers: { [key: number]: string } = {
   185: 'B dEPSILON'
 };
 
-export function usnoParser(dataString: string): { [key: string]: string }[] {
+function usnoParser(dataString: string): { [key: string]: string }[] {
   const dataRows = dataString.split(/\r?\n/);
   const parsedData = dataRows.map((row): [string, string][] => {
     const splittedRow = row.split('');
@@ -79,7 +80,7 @@ export function usnoParser(dataString: string): { [key: string]: string }[] {
   return objectifiedData;
 }
 
-export function getUsnoData(): Promise<AxiosResponse> {
+function getUsnoData(): Promise<AxiosResponse> {
   return axios.get('http://maia.usno.navy.mil/ser7/finals.daily');
 }
 
@@ -99,4 +100,19 @@ export async function getUsnoDataFromDate(date: Date): Promise<{ [key: string]: 
     return true;
   });
   return output[0];
+}
+
+export interface GeocodeObj {
+  [key: string]: {
+    [key: string]: string;
+  };
+}
+
+export async function getGeocodeData(searchStrings: string[]): Promise<GeocodeObj[]> {
+  const url = 'https://api.opencagedata.com/geocode/v1/json';
+  const key = config.geocodeAPI;
+
+  const query = searchStrings.join('+');
+  const fetchedData = await axios.get(`${url}?key=${key}&q=${query}`);
+  return fetchedData.data.results;
 }

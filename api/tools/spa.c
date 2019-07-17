@@ -1231,14 +1231,14 @@ int main(int argc, char *argv[])
   spa.timezone = atof(argv[7]);
   spa.delta_ut1 = atof(argv[8]);
   spa.delta_t = atof(argv[9]);
-  spa.longitude = -105.1786;
-  spa.latitude = 39.742476;
-  spa.elevation = 1830.14;
-  spa.pressure = 820;
-  spa.temperature = 11;
-  spa.slope = 30;
-  spa.azm_rotation = -10;
-  spa.atmos_refract = 0.5667;
+  spa.longitude = atof(argv[10]);
+  spa.latitude = atof(argv[11]);
+  spa.elevation = atof(argv[12]);
+  spa.pressure = atof(argv[13]);
+  spa.temperature = atof(argv[14]);
+  spa.slope = 0;
+  spa.azm_rotation = 0;
+  spa.atmos_refract = 0.13;
   spa.function = SPA_ALL;
 
   //call the SPA calculate function and pass the SPA structure

@@ -4,10 +4,12 @@ import * as winston from 'winston';
 import * as cors from 'cors';
 import * as helmet from 'helmet';
 import * as bodyParser from 'body-parser';
-// import * as boom from '@hapi/boom';
+import * as boom from '@hapi/boom';
 import * as expressWinston from 'express-winston';
 
-import { calculateSpaHandler, geocodeHandler } from './utils';
+import {
+  spaHandler, geocodeHandler, weatherHandler
+} from './utils';
 // import getShadowCast from './utils/shadowcast';
 
 // create server
@@ -32,14 +34,14 @@ server.use(
 
 // ENDPOINTS
 server.get('/', (_req, res): void => {
-  res.send('use /calc or /shadowcast');
+  res.send('use /spa, /geocode, /elevation');
 });
 
-server.get('/calc', calculateSpaHandler);
+server.get('/spa', spaHandler);
 
 server.get('/geocode', geocodeHandler);
 
-// server.get('/shadowcast', getShadowCast);
+server.get('/weather', weatherHandler);
 
 server.use(
   expressWinston.errorLogger({
@@ -50,12 +52,12 @@ server.use(
 
 // ERROR HANDLING
 
-// server.use((err: boom, _res: express.Request, res: express.Response): void => {
-//   if (err.isServer) {
-//     console.error(err);
-//   }
-//   res.status(err.output.statusCode).json(err.output.payload);
-// });
+server.use((err: boom, _res: express.Request, res: express.Response): void => {
+  if (err.isServer) {
+    console.error(err);
+  }
+  res.status(err.output.statusCode).json(err.output.payload);
+});
 // SERVER START
 
 server.listen(3000, (): void => {

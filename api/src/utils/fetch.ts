@@ -37,6 +37,16 @@ const headers: { [key: number]: string } = {
   185: 'B dEPSILON'
 };
 
+export interface GeocodeObj {
+  [key: string]: {
+    [key: string]: string;
+  };
+}
+
+/**
+ * parses the incoming structure from usno and removes all unneeded data
+ * @param dataString
+ */
 function usnoParser(dataString: string): { [key: string]: string }[] {
   const dataRows = dataString.split(/\r?\n/);
   const parsedData = dataRows.map((row): [string, string][] => {
@@ -80,10 +90,17 @@ function usnoParser(dataString: string): { [key: string]: string }[] {
   return objectifiedData;
 }
 
+/**
+ * sends a request to usno server
+ */
 function getUsnoData(): Promise<AxiosResponse> {
   return axios.get('http://maia.usno.navy.mil/ser7/finals.daily');
 }
 
+/**
+ * gets the specific data from usno
+ * @param date
+ */
 export async function getUsnoDataFromDate(date: Date): Promise<{ [key: string]: string }> {
   const usnoData = await getUsnoData();
   const parsedData = usnoParser(usnoData.data);
@@ -102,12 +119,10 @@ export async function getUsnoDataFromDate(date: Date): Promise<{ [key: string]: 
   return output[0];
 }
 
-export interface GeocodeObj {
-  [key: string]: {
-    [key: string]: string;
-  };
-}
-
+/**
+ * sends a request to opencage api
+ * @param searchStrings
+ */
 export async function getGeocodeData(searchStrings: string[]): Promise<GeocodeObj[]> {
   const url = 'https://api.opencagedata.com/geocode/v1/json';
   const key = config.geocodeAPI;
@@ -115,4 +130,35 @@ export async function getGeocodeData(searchStrings: string[]): Promise<GeocodeOb
   const query = searchStrings.join('+');
   const fetchedData = await axios.get(`${url}?key=${key}&q=${query}`);
   return fetchedData.data.results;
+}
+
+/**
+ * sends a request to the jawg elevation api
+ * @param lat
+ * @param lng
+ */
+export async function getElevation(lat: number | string, lng: number | string): Promise<number | string> {
+  const url = 'https://api.jawg.io/elevations';
+  const query = `?locations=${lat},${lng}`;
+  const token = config.elevationToken;
+
+  const fetchedData = await axios.get(`${url}${query}&access-token=${token}`);
+  const { elevation } = fetchedData.data[0];
+
+  return elevation;
+}
+
+/**
+ * sends a request to the openweathermap api
+ * @param lat
+ * @param lng
+ */
+export async function getWeatherData(lat: number | string, lng: number | string): Promise<{ [key: string]: string | number }> {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric`;
+  const key = config.weatherKey;
+
+  const fetchedData = await axios.get(`${url}&appid=${key}`);
+  const data = fetchedData.data.main;
+
+  return data;
 }

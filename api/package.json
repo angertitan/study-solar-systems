@@ -7,8 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc && gcc ./tools/spa.c -lm -o ./dist/spa ",
-    "watch": "nodemon",
-    "watch:once": "ts-node"
+    "dev": "nodemon",
+    "ts-node": "ts-node"
   },
   "dependencies": {
     "@hapi/boom": "^7.4.2",
@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.1.1",
     "express-winston": "^3.2.1",
-    "helmet": "^3.18.0",
+    "helmet": "^3.19.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
@@ -33,10 +33,10 @@
     "@types/express-winston": "^3.0.3",
     "@types/hapi__boom": "^7.4.0",
     "@types/helmet": "^0.0.43",
-    "@types/node": "^12.6.4",
+    "@types/node": "^12.6.8",
     "@typescript-eslint/eslint-plugin": "^1.12.0",
     "@typescript-eslint/parser": "^1.12.0",
-    "eslint": "^5.0.0",
+    "eslint": "^6.0.1",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.0",
     "nodemon": "^1.19.1",

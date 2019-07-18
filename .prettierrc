@@ -1,6 +1,8 @@
 {
-  "printWidth": 180,
+  "printWidth": 120,
+  "trailingComma": "none",
   "singleQuote": true,
   "arrowParens": "always",
-  "semi": true
+  "semi": true,
+  "jsxBracketSameLine": true
 }

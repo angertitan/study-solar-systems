@@ -121,7 +121,7 @@ export function geocodeHandler(req: Request, res: Response, next: NextFunction):
     lat, lng, location, ...rest
   } = req.query;
 
-  if (Object.keys(rest).length > 1) {
+  if (Object.keys(rest).length > 0) {
     next({ error: 'use lat and lng together or location for query' });
   }
 
@@ -149,6 +149,8 @@ export function geocodeHandler(req: Request, res: Response, next: NextFunction):
       .catch((err): void => {
         next(err);
       });
+
+    return;
   }
 
   if (Object.keys(location).length < 1) {

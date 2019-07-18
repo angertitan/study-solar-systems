@@ -30,9 +30,9 @@ const DataTable = (props: DataTableProps): JSX.Element => {
       return (
         <li key={key} className={`datatable-item ${key}`}>
           <div className={`${key}-header`}>
-            <h6>{dataStruct[key]}</h6>
+            <h5>{dataStruct[key]}</h5>
           </div>
-          <div className={`${key}-valuje`}>{data[key]}</div>
+          <h6 className={`${key}-value`}>{data[key] || ''}</h6>
         </li>
       );
     }
@@ -40,13 +40,16 @@ const DataTable = (props: DataTableProps): JSX.Element => {
   if (apiFetchError) {
     return <div>Error at fetching, you need to start the Server</div>;
   }
-  if (isLoading) {
-    return <div>...Loading</div>;
-  }
+
+  const loadingIndicator = !isLoading
+    ? ''
+    : (): JSX.Element => <div className="datable_items-header--loading-indicator" />;
+
   return (
     <div className="datatable_items">
       <div className="datatable_items-header">
         <h3>Daten:</h3>
+        {loadingIndicator}
       </div>
       <ul className="datatable_items-data">{dataList}</ul>
     </div>

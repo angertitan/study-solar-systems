@@ -1256,10 +1256,10 @@ int main(int argc, char *argv[])
     printf("H:%.6f degrees\n", spa.h);
     printf("dPsi:%.6e degrees\n", spa.del_psi);
     printf("dEpsilon:%.6e degrees\n", spa.del_epsilon);
-    printf("Epsilon:%.6f degrees\n", spa.epsilon);
-    printf("Zenith:%.6f degrees\n", spa.zenith);
-    printf("Azimuth:%.6f degrees\n", spa.azimuth);
-    printf("Incidence:%.6f degrees\n", spa.incidence);
+    printf("epsilon:%.6f degrees\n", spa.epsilon);
+    printf("zenith:%.6f degrees\n", spa.zenith);
+    printf("azimuth:%.6f degrees\n", spa.azimuth);
+    printf("incidence:%.6f degrees\n", spa.incidence);
 
     min = 60.0 * (spa.sunrise - (int)(spa.sunrise));
     sec = 60.0 * (min - (int)min);

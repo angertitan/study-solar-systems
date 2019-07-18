@@ -6,13 +6,7 @@ interface BaseObject {
 
 const Visualization = (props: BaseObject): JSX.Element => {
   const { data } = props;
-
-  console.log(data);
-  return (
-    <div id="Visualization" className="visualization">
-      <div className="visualization-header">Vis</div>
-    </div>
-  );
+  return <div className="visualization-header">Vis</div>;
 };
 
 export default Visualization;

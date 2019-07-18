@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 import * as dfns from 'date-fns';
 
 import {
-  getGeocodeData, GeocodeObj, getElevation, getWeatherData
+  getGeocodeData, getElevation, getWeatherData
 } from './fetch';
 import { getDUT, getDeltaT } from './time';
 
@@ -161,16 +161,18 @@ export function geocodeHandler(req: Request, res: Response, next: NextFunction):
 
   getGeocodeData(queryValues).then((results): void => {
     const output = results.map(
-      (result): GeocodeObj => {
+      (result): {} => {
+        console.log('result', result);
         const {
           geometry, components, formatted, annotations
         } = result;
-        return {
+        const outObj = {
           components,
           geometry,
           formatted,
-          annotations
+          timezone: annotations.timezone
         };
+        return outObj;
       }
     );
     res.status(200).send(output);

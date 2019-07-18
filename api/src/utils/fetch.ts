@@ -37,10 +37,11 @@ const headers: { [key: number]: string } = {
   185: 'B dEPSILON'
 };
 
-export interface GeocodeObj {
-  [key: string]: {
-    [key: string]: string;
-  };
+interface GeocodeObj {
+  components: {[key: string]: string};
+  geometry: {[key: string]: string};
+  formatted: string;
+  annotations: {[key: string]: string};
 }
 
 /**

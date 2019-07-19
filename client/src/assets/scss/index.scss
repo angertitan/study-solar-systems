@@ -2,6 +2,61 @@
 
 // global styles
 
-// import
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  font-size: 16px;
+}
+body {
+  background: hsl(0, 0, 98);
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato';
+}
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Source Sans Pro';
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  padding-bottom: 0.5rem;
+}
+h2 {
+  font-size: 2.2rem;
+}
+h3 {
+  font-size: 1.9rem;
+}
+h4 {
+  font-size: 1.6rem;
+}
+h5 {
+  font-size: 1.4rem;
+}
+h6 {
+  font-size: 1.1rem;
+  padding-bottom: 0.5rem;
+  font-weight: 400;
+}
+ul {
+  padding: 0;
+  margin: 0;
+}
+li {
+  list-style: none;
+}
+// import
+@import 'rc-slider/assets/index.css';
+@import 'react-datetime-picker/dist/DateTimePicker.css';
 @import 'App.scss';

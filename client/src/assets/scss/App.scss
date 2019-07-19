@@ -1,0 +1,130 @@
+.App {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.datatable {
+  background: hsl(0, 0, 92);
+  flex-basis: 15%;
+
+  height: 85vh;
+}
+
+.datatable_items {
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.datatable_items-header {
+  padding-bottom: 2rem;
+}
+.datatable_item-value {
+  padding: 1rem 0;
+}
+
+.visualization {
+  flex-basis: 85%;
+  height: 85vh;
+}
+.controls {
+  background: hsl(0, 0, 92);
+  display: flex;
+  height: 15vh;
+  width: 100vw;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.controls_search-form {
+  display: flex;
+  flex-basis: 100%;
+  flex-grow: 1;
+}
+
+.controls_search-label {
+  position: relative;
+  flex-basis: 15%;
+}
+
+.controls_search-input {
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.controls_search-input:focus + div {
+  opacity: 1;
+  transform: translate(0%, -100%);
+}
+.controls_search-results {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 8px 5px 0px rgba(0, 0, 0, 0.2);
+  max-height: 300%;
+  width: 200%;
+  background: hsl(0, 0, 100);
+  text-align: center;
+  top: 0;
+  transform: translate(-110%, -100%);
+  position: absolute;
+  opacity: 1;
+  border-radius: 10px;
+  overflow: scroll;
+  overflow-x: hidden;
+  transition: 0.5s all ease-in-out;
+}
+
+.controls_search-results-btn,
+.controls_search-results-loading,
+.controls_search-results-placeholder {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  padding: 1.2rem 0.2rem;
+  font-weight: bold;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0px;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.controls_submit-btn {
+  display: none;
+}
+.controls_slider {
+  flex-basis: 85%;
+  display: block;
+  padding: 0rem 7.5rem;
+}
+.rc-slider {
+}
+
+.rc-slider-rail {
+  height: 9px;
+  background-color: hsl(0, 0, 50);
+}
+
+.rc-slider-handle {
+  height: 18px;
+  width: 18px;
+  border-color: darkgray;
+  background-color: hsl(0, 0, 100);
+}
+
+.controls_datetime-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+.react-datetime-picker__wrapper {
+  border: 0;
+  padding: 1rem 0;
+}

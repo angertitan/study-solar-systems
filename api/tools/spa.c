@@ -1249,25 +1249,25 @@ int main(int argc, char *argv[])
   {
     //display the results inside the SPA structure
 
-    printf("jd:%.6f\n", spa.jd);
-    printf("L:%.6e degrees\n", spa.l);
-    printf("B:%.6e degrees\n", spa.b);
-    printf("R:%.6f AU\n", spa.r);
-    printf("H:%.6f degrees\n", spa.h);
-    printf("dPsi:%.6e degrees\n", spa.del_psi);
-    printf("dEpsilon:%.6e degrees\n", spa.del_epsilon);
-    printf("epsilon:%.6f degrees\n", spa.epsilon);
-    printf("zenith:%.6f degrees\n", spa.zenith);
-    printf("azimuth:%.6f degrees\n", spa.azimuth);
-    printf("incidence:%.6f degrees\n", spa.incidence);
+    printf("jd|%.6f\n", spa.jd);
+    printf("L|%.6e degrees\n", spa.l);
+    printf("B|%.6e degrees\n", spa.b);
+    printf("R|%.6f AU\n", spa.r);
+    printf("H|%.6f degrees\n", spa.h);
+    printf("dPsi|%.6e degrees\n", spa.del_psi);
+    printf("dEpsilon|%.6e degrees\n", spa.del_epsilon);
+    printf("epsilon|%.6f degrees\n", spa.epsilon);
+    printf("zenith|%.6f degrees\n", spa.zenith);
+    printf("azimuth|%.6f degrees\n", spa.azimuth);
+    printf("incidence|%.6f degrees\n", spa.incidence);
 
     min = 60.0 * (spa.sunrise - (int)(spa.sunrise));
     sec = 60.0 * (min - (int)min);
-    printf("sr:%02d/%02d/%02d\n", (int)(spa.sunrise), (int)min, (int)sec);
+    printf("sr|%02d:%02d:%02d\n", (int)(spa.sunrise), (int)min, (int)sec);
 
     min = 60.0 * (spa.sunset - (int)(spa.sunset));
     sec = 60.0 * (min - (int)min);
-    printf("ss:%02d/%02d/%02d", (int)(spa.sunset), (int)min, (int)sec);
+    printf("ss|%02d:%02d:%02d", (int)(spa.sunset), (int)min, (int)sec);
   }
   else
     printf("error:%d", result);

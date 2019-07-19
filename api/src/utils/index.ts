@@ -23,14 +23,15 @@ function parseCalcData(data: string): BaseObject {
   const dataRows = data.split('\n');
 
   if (dataRows.length < 2) {
-    const [key, errorCode] = dataRows[0].split(':');
+    const [key, errorCode] = dataRows[0].split('|');
     const errorMessage = `Given data on Argument${errorCode} is out of valid range`;
 
     return { [key]: errorMessage };
   }
   const output: BaseObject = {};
   dataRows.forEach((dataRow): void => {
-    const [key, value] = dataRow.split(':');
+    const [key, value] = dataRow.split('|');
+
     output[key] = value;
   });
   return output;
@@ -104,6 +105,8 @@ export function spaHandler(req: Request, res: Response, next: NextFunction): voi
     ls.on('close', (): void => {
       res.end();
     });
+
+    ls.on('error', (err): void => next(err));
   });
 }
 
@@ -156,13 +159,19 @@ export function geocodeHandler(req: Request, res: Response, next: NextFunction):
   if (Object.keys(location).length < 1) {
     next({ error: 'search parameter are required' });
   }
-
+  location.replace(/\u00e4/g, 'ae');
+  location.replace(/\u00f6/g, 'oe');
+  location.replace(/\u00fc/g, 'ue');
+  location.replace(/\u00df/g, 'ss');
+  location.replace(/\u00d6/g, 'Oe');
+  location.replace(/\u00c4/g, 'Ae');
+  location.replace(/\u00dc/g, 'Ue');
   const queryValues = location.split(',');
+
 
   getGeocodeData(queryValues).then((results): void => {
     const output = results.map(
       (result): {} => {
-        console.log('result', result);
         const {
           geometry, components, formatted, annotations
         } = result;
@@ -176,7 +185,7 @@ export function geocodeHandler(req: Request, res: Response, next: NextFunction):
       }
     );
     res.status(200).send(output);
-  });
+  }).catch((err): void => next(err));
 }
 
 /**
